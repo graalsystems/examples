@@ -61,11 +61,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-cosmos</artifactId>
-            <version>4.8.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.parquet</groupId>
             <artifactId>parquet-avro</artifactId>
             <version>${parquet.version}</version>
@@ -189,5 +184,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub graalsystems Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/graalsystems/sdk</url>
+        </repository>
+    </repositories>
 
 </project>
