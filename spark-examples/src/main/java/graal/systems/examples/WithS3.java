@@ -3,23 +3,21 @@ package graal.systems.examples;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import picocli.CommandLine;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.concurrent.Callable;
 
 //
 @Slf4j
 @CommandLine.Command
-public class Simple implements Callable<Integer> {
+public class WithS3 implements Callable<Integer> {
 
     public static void main(String... args) {
-        int exitCode = new CommandLine(new Simple()).execute(args);
+        int exitCode = new CommandLine(new WithS3()).execute(args);
         System.exit(exitCode);
     }
 
@@ -28,15 +26,7 @@ public class Simple implements Callable<Integer> {
         try {
             SparkSession sparkSession = SparkSession.builder().getOrCreate();
 
-            Dataset<Row> data = sparkSession.createDataFrame(
-                    new JavaSparkContext(sparkSession.sparkContext())
-                            .parallelize(Arrays.asList(
-                                    new Item(1L, "Title1", "Category1", 2.0d),
-                                    new Item(2L, "Title2", "Category1", 2.0d),
-                                    new Item(3L, "Title3", "Category2", 2.0d),
-                                    new Item(4L, "Title4", "Category2", 2.0d),
-                                    new Item(5L, "Title5", "Category2", 2.0d)
-                            )), Item.class);
+            Dataset<Row> data = sparkSession.read().csv("s3://" + System.getenv("AWS_BUCKET") + "/data-spark-java.csv");
             data.printSchema();
 
             data = data.filter(data.col("id").leq(20L)).cache();

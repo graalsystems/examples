@@ -187,8 +187,11 @@
 
     <repositories>
         <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
             <id>github</id>
-            <name>GitHub graalsystems Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/graalsystems/sdk</url>
         </repository>
     </repositories>
