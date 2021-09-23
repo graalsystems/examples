@@ -16,10 +16,10 @@ import java.util.concurrent.Callable;
 //
 @Slf4j
 @CommandLine.Command
-public class Demo implements Callable<Integer> {
+public class Simple implements Callable<Integer> {
 
     public static void main(String... args) {
-        int exitCode = new CommandLine(new Demo()).execute(args);
+        int exitCode = new CommandLine(new Simple()).execute(args);
         System.exit(exitCode);
     }
 
