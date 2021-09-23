@@ -1,9 +1,6 @@
 # Prerequisites
 
-    python3 -m pip install --upgrade pip
-    python3 -m pip install --upgrade build
-    
-    python3 -m pip install pandas boto "s3fs<=0.4"
+    python3 -m pip install --upgrade pip build pandas boto3 fsspec s3fs
 
 # Build
 

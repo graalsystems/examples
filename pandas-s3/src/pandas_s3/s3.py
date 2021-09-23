@@ -15,7 +15,8 @@ books_df = pd.read_csv(
     f"s3://{AWS_BUCKET}/{input}",
     storage_options={
         "key": AWS_ACCESS_KEY_ID,
-        "secret": AWS_SECRET_ACCESS_KEY
+        "secret": AWS_SECRET_ACCESS_KEY,
+        "client_kwargs": dict(endpoint_url = AWS_ENDPOINT, verify = "false")
     },
 )
 
@@ -26,6 +27,7 @@ table.to_csv(
     index=False,
     storage_options={
         "key": AWS_ACCESS_KEY_ID,
-        "secret": AWS_SECRET_ACCESS_KEY
+        "secret": AWS_SECRET_ACCESS_KEY,
+        "client_kwargs": dict(endpoint_url = AWS_ENDPOINT, verify = "false")
     },
 )
