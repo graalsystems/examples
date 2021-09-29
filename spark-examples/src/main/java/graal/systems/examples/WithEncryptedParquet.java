@@ -12,6 +12,15 @@ import java.util.concurrent.Callable;
 @CommandLine.Command
 public class WithEncryptedParquet implements Callable<Integer> {
 
+    @CommandLine.Option(names = {"--field-value-encrypt-key"}, description = "Encrypt key for field \"value\"", required = true)
+    private String fieldValueEncryptKey = "xxxx-xxxx-xxxx-xxx";
+
+    @CommandLine.Option(names = {"--footer-encrypt-key"}, description = "Encrypt key for footer", required = true)
+    private String footerEncryptKey = "xxxx-xxxx-xxxx-xxx";
+
+    @CommandLine.Option(names = {"--file"}, description = "Parquet file", required = true)
+    private String file = "data-encrypted-parquet.parquet";
+
     public static void main(String... args) {
         int exitCode = new CommandLine(new WithEncryptedParquet()).execute(args);
         System.exit(exitCode);
@@ -20,19 +29,13 @@ public class WithEncryptedParquet implements Callable<Integer> {
     @Override
     public Integer call() {
         try {
-            SparkSession sparkSession = SparkSession.builder()
-                    .config("parquet.crypto.factory.class", "org.apache.parquet.crypto.keytools.PropertiesDrivenCryptoFactory")
-                    .config("parquet.encryption.kms.client.class", "graal.systems.sdk.parquet.kms.InternalKmsClient")
-                    .config("parquet.encryption.kms.instance.id", "sr-default-tenant")
-                    .config("parquet.encryption.kms.instance.url", "https://staging.api.graal.systems")
-                    .config("parquet.encryption.kms.access.token", System.getenv("GRAAL_TOKEN"))
-                    .getOrCreate();
+            SparkSession sparkSession = SparkSession.builder().getOrCreate();
 
             Dataset<Row> parquet = sparkSession
                     .read()
-                    .option("parquet.encryption.column.keys", "examples-field-value-encrypt-key: value")
-                    .option("parquet.encryption.footer.key", "examples-footer-encrypt-key")
-                    .parquet("s3://" + System.getenv("AWS_BUCKET") + "/data-encrypted-parquet.parquet");
+                    .option("parquet.encryption.column.keys", this.fieldValueEncryptKey)
+                    .option("parquet.encryption.footer.key", this.footerEncryptKey)
+                    .parquet("s3://" + System.getenv("AWS_BUCKET") + "/" + this.file);
 
             parquet.show(false);
 
@@ -42,5 +45,4 @@ public class WithEncryptedParquet implements Callable<Integer> {
             return 1;
         }
     }
-
 }
