@@ -33,7 +33,7 @@ table = books_df.groupby(pd.Grouper(freq='M')).sum()
 
 # Write
 with io.StringIO() as csv_buffer:
-    books_df.to_csv(csv_buffer)
+    table.to_csv(csv_buffer)
     response = s3.put_object(
         Bucket=AWS_BUCKET, Key=output, Body=csv_buffer.getvalue()
     )
