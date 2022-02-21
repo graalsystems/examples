@@ -99,8 +99,7 @@
         <dependency>
             <groupId>graal.systems</groupId>
             <artifactId>parquet-kms</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -156,18 +155,6 @@
             <version>5.7.1</version>
             <scope>test</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.junit.jupiter</groupId>-->
-        <!--            <artifactId>junit-jupiter-migrationsupport</artifactId>-->
-        <!--            <version>5.6.3</version>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.junit.vintage</groupId>-->
-        <!--            <artifactId>junit-vintage-engine</artifactId>-->
-        <!--            <version>5.6.3</version>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>

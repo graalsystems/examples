@@ -1,0 +1,35 @@
+<configuration>
+    <property>
+        <name>yarn.resourcemanager.hostname</name>
+        <value>172.27.96.1</value>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.address</name>
+        <value>${yarn.resourcemanager.hostname}:8081</value>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.scheduler.address</name>
+        <value>${yarn.resourcemanager.hostname}:8081</value>
+    </property>
+    <property>
+        <name>yarn.http.policy</name>
+        <value>HTTP_ONLY</value>
+    </property>
+
+    <!-- Internal values -->
+    <property>
+        <name>yarn.app.mapreduce.am.env</name>
+        <value>GRAAL_PROJECT=${env.GRAAL_PROJECT},GRAAL_TENANT=${env.GRAAL_TENANT},GRAAL_BRIDGE=${env.GRAAL_BRIDGE}</value>
+    </property>
+
+    <property>
+        <name>yarn.ipc.record.factory.class</name>
+        <value>graal.systems.sdk.yarn.rpc.GraalRecordFactoryPBImpl</value>
+    </property>
+
+</configuration>
+
+
+
+
+

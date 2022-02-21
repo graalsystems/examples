@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!-- Put site-specific property overrides in this file. -->
+<configuration xmlns:xi="http://www.w3.org/2001/XInclude">
+    <!-- MR AM properties -->
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+    </property>
+
+    <property>
+        <name>mapreduce.map.env</name>
+        <value>GRAAL_PROJECT=${env.GRAAL_PROJECT},GRAAL_TENANT=${env.GRAAL_TENANT},GRAAL_BRIDGE=${env.GRAAL_BRIDGE}</value>
+    </property>
+    <property>
+        <name>mapreduce.reduce.env</name>
+        <value>GRAAL_PROJECT=${env.GRAAL_PROJECT},GRAAL_TENANT=${env.GRAAL_TENANT},GRAAL_BRIDGE=${env.GRAAL_BRIDGE}</value>
+    </property>
+
+    <!-- Internal values -->
+    <property>
+        <name>yarn.app.mapreduce.am.env</name>
+        <value>GRAAL_PROJECT=${env.GRAAL_PROJECT},GRAAL_TENANT=${env.GRAAL_TENANT},GRAAL_BRIDGE=${env.GRAAL_BRIDGE}</value>
+    </property>
+</configuration>
