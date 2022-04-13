@@ -36,8 +36,8 @@ def main(client=None):
     model = SVC(kernel='rbf')
     search = RandomizedSearchCV(model, param_space, cv=3, n_iter=10, verbose=10)
 
-    with joblib.parallel_backend('dask'): # QUE FAIRE DE CETTE LIGNE DE CODE ?????????????
-        search.fit(digits.data, digits.target) # Code SKLEARN à compute en parallel
+    with joblib.parallel_backend('dask'):
+        search.fit(digits.data, digits.target)
 
     print("Dask Sklearn & Joblib OK !")
 
