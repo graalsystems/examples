@@ -1,7 +1,7 @@
 import dask.dataframe
 
 def test_dask():
-    df = dask.dataframe.read_csv('https://raw.githubusercontent.com/ThomasGraff/test_dask/main/dataset_test_dask.csv?token=GHSAT0AAAAAABTODS3JU2CBSAUZJD3OXPHYYSWZKTQ')
+    df = dask.dataframe.read_csv('dataset_test_dask.csv')
     mean_std_df = df.groupby("name")
     mean_std_df = mean_std_df.mean()
     mean_std_df = mean_std_df.std()

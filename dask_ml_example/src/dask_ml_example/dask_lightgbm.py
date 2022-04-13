@@ -3,7 +3,7 @@ import dask
 
 def test_lightgbm():
     print("loading data")
-    df = dask.dataframe.read_csv('https://raw.githubusercontent.com/ThomasGraff/test_dask/main/dataset_test_dask.csv?token=GHSAT0AAAAAABTODS3JU2CBSAUZJD3OXPHYYSWZKTQ')
+    df = dask.dataframe.read_csv('dataset_test_dask.csv')
     dX = df[['x','y']].to_dask_array(lengths=True)
     dy = df['target'].to_dask_array(lengths=True)
     print("beginning training")

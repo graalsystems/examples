@@ -4,7 +4,7 @@ import dask
 
 def test_xgboost(client=None):
     # X and y must be Dask dataframes or arrays
-    df = dask.dataframe.read_csv('https://raw.githubusercontent.com/ThomasGraff/test_dask/main/dataset_test_dask.csv?token=GHSAT0AAAAAABTODS3JU2CBSAUZJD3OXPHYYSWZKTQ')
+    df = dask.dataframe.read_csv('dataset_test_dask.csv')
     X = df[['x','y']].to_dask_array(lengths=True)
     y = df['target'].to_dask_array(lengths=True)
 
