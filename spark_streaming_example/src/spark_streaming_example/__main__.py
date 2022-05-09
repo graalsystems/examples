@@ -1,13 +1,17 @@
 from pyspark.sql import SparkSession
+import argparse
 
-# Local
-# PULSAR_BROKER_ENDPOINT = "pulsar+ssl://127.0.0.1:6651"
-# PULSAR_ADMIN_ENDPOINT = "https://127.0.0.1:443"
+parser = argparse.ArgumentParser()
+parser.add_argument("--pulsar_broker", help="URL of Pulsar broker", required=True)
+parser.add_argument("--pulsar_admin", help="URL of Pulsar admin", required=True)
+parser.add_argument("--pulsar_topic", help="Pulsar topic", required=True)
+parser.add_argument("--pulsar_token", help="Pulsar token", required=True)
+args = parser.parse_args()
 
-PULSAR_BROKER_ENDPOINT = "pulsar+ssl://stream.dev.client.graal.systems:6651"
-PULSAR_ADMIN_ENDPOINT = "https://stream.dev.client.graal.systems:443"
-PULSAR_TOPIC = "apache/pulsar/test-topic"
-PULSAR_AUTH_TOKEN = "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ0ZXN0LXVzZXIifQ.tYDsi1Ly8DJ6P1O-0rMK6VZDzRO6jIJ4mJ47apMRUhDxnHx_hNEJw1rUHCA9FtVvAwNcLTxDpLXzyAGj8YTON2y7LsON0R4d6tiDIq_AHOjRdKO07mqFa8FJmAmKqX_XqcyIrOxt8rYMuvnrkdLukDpcqO5ouYOH2PUVR6RbzNbgjRF5EL4471977jHR39r9yhXlkaR0Bwl9puS2NJ3um9QyAeVwLfMEn5Fw9XcY15V3_QNsT8KVNnHf0fwgkqn2020nhxObs4dcvMeXk8gI1y9A0am-TeI-LpipeMFFnwVGw2PfI-9yrnFQw2UiFsZ5FnbZSeUf2ZYfkd8Hf6GH6g"
+PULSAR_BROKER_ENDPOINT = args.pulsar_broker
+PULSAR_ADMIN_ENDPOINT = args.pulsar_admin
+PULSAR_AUTH_TOKEN= args.pulsar_token
+PULSAR_TOPIC = args.pulsar_topic
 
 spark = SparkSession \
         .builder \
