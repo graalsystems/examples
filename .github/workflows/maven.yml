@@ -22,5 +22,7 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file */pom.xml
+    - name: Build with Maven Hadoop
+      run: mvn -B package --file hadoop-examples/pom.xml
+    - name: Build with Maven Spark
+      run: mvn -B package --file spark-examples/pom.xml
