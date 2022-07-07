@@ -3,6 +3,8 @@ import tensorflow as tf
 import json
 import os
 
+from ray.train import Trainer
+
 def mnist_dataset(batch_size):
     (x_train, y_train), _ = tf.keras.datasets.mnist.load_data()
     # The `x` arrays are in uint8 and have values in the [0, 255] range.
@@ -45,8 +47,6 @@ def train_func_distributed():
         multi_worker_model = build_and_compile_cnn_model()
 
     multi_worker_model.fit(multi_worker_dataset, epochs=3, steps_per_epoch=70)
-
-from ray.train import Trainer
 
 trainer = Trainer(backend="tensorflow", num_workers=4)
 
