@@ -9,13 +9,13 @@ import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.pulsar.client.api.SubscriptionType;
 
-public class Flink {
+public class FlinkStreaming {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         PulsarSource<String> source = PulsarSource.builder()
-                .setServiceUrl("pulsar://127.0.0.1:6650")
-                .setAdminUrl("http://127.0.0.1:80")
+                .setServiceUrl("pulsar://host.docker.internal:6650")
+                .setAdminUrl("http://host.docker.internal:80")
                 .setTopics("apache/pulsar/test-topic")
                 .setDeserializationSchema(PulsarDeserializationSchema.flinkSchema(new SimpleStringSchema()))
                 .setSubscriptionName("my-subscription")
@@ -26,12 +26,12 @@ public class Flink {
 
         test.print();
 
-        try {
+        //try {
             env.execute();
-        }
-        catch (Exception e) {
-            System.out.println("Error: " + e);
-        }
+        //}
+        //catch (Exception e) {
+        //    System.out.println("Error: " + e);
+        //}
         System.out.println("Finish!");
     }
 }
