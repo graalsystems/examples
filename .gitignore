@@ -77,3 +77,4 @@ cli/bin
 
 *launch.local.sh
 dist/
+/pyspark-examples/dependencies/
