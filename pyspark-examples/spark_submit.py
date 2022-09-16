@@ -3,10 +3,19 @@ spark_submit.py
 """
 import logging
 
-import src.pyspark_examples.processing
+from tools.processing import run
 
 logging.basicConfig(level=logging.DEBUG)
 
-if __name__ == "__main__":
+
+def main():
+    """Main script definition.
+    :return: None
+    """
     logging.debug('Run Spark job!')
-    src.pyspark_examples.processing.run()
+    run()
+
+
+# entry point for PySpark
+if __name__ == "__main__":
+    main()
