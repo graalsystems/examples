@@ -13,8 +13,10 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <version.flink>1.14.0</version.flink>
+
+        <version.flink>1.15.3</version.flink>
         <version.scala>2.12</version.scala>
+        <version.hive>3.1.2</version.hive>
     </properties>
 
     <dependencies>
@@ -30,18 +32,49 @@
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-streaming-java_${version.scala}</artifactId>
+            <artifactId>flink-streaming-java</artifactId>
             <version>${version.flink}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-clients_${version.scala}</artifactId>
+            <artifactId>flink-clients</artifactId>
             <version>${version.flink}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-connector-pulsar_${version.scala}</artifactId>
+            <artifactId>flink-connector-pulsar</artifactId>
             <version>${version.flink}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-hive_${version.scala}</artifactId>
+            <version>${version.flink}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-common</artifactId>
+            <version>${version.flink}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-api-java-bridge</artifactId>
+            <version>${version.flink}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-planner_${version.scala}</artifactId>
+            <version>${version.flink}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-metastore</artifactId>
+            <version>${version.hive}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-exec</artifactId>
+            <version>${version.hive}</version>
         </dependency>
     </dependencies>
 
