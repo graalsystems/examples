@@ -1,3 +1,6 @@
+variables:
+- group: Dev var group
+
 trigger:
 - main
 
