@@ -5,9 +5,65 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- bash: | 
+   sudo apt-get install jq
+   which jq
+  displayName: 'Fetch jq'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-  displayName: 'Run a multi-line script'
+- bash: | 
+    set -e
+    set -x
+    set -o errexit
+    set -o pipefail
+
+    export TENANT="${{ variables.TENANT }}"
+    export INFRASTRUCTURE="scaleway-frpar1"
+    export JOB="5ea3450a-ae5f-4a2e-aeea-ff3b273c5867"
+    export API="${{ variables.API }}"
+    export AUTH="${{ variables.AUTH }}"
+    export KEY="${{ variables.KEY }}"
+    export SECRET="${{ variables.SECRET }}"
+
+    main() {
+    REALM=$(curl "$API/tenants/$TENANT?attribute=realm" | jq -r -c '.realm')
+    export BEARER=$(echo -n $KEY:$SECRET | base64 | tr -d '\n')
+    export RES=$(curl -s --location --request POST "$AUTH/realms/$REALM/protocol/openid-connect/token" -H "Content-Type=x-www-form-urlencoded" --header "Authorization: Basic $BEARER" -d "grant_type=client_credentials")
+    export TOKEN=$(echo $RES | jq -r -c '.access_token')
+
+    BODY=$( cat <<END_JSON
+      {
+        "name": "Run database migration (${JOB})",
+        "initiator": "ignored",
+        "infrastructure_id": "${INFRASTRUCTURE}"
+      }
+    END_JSON
+    )
+    echo $BODY
+    RUN_ID=$(curl -XPOST \
+      -H "Authorization:Bearer $TOKEN" \
+      -H "X-Tenant:$TENANT" \
+      -H "Content-Type: application/vnd.graal.systems.v1.jobrun+json;charset=UTF-8" \
+      -d "$BODY" \
+      "$API/jobs/$JOB/runs" | jq -r -c '.id')
+    sleep 5
+    while true
+    do
+        export RES=$(curl -s --location --request POST "$AUTH/realms/$REALM/protocol/openid-connect/token" -H "Content-Type=x-www-form-urlencoded" --header "Authorization: Basic $BEARER" -d "grant_type=client_credentials")
+        export TOKEN=$(echo $RES | jq -r -c '.access_token')
+        STATUS=$(curl -XGET -s -k \
+            -H "Authorization:Bearer $TOKEN" \
+            -H "X-Tenant:$TENANT" \
+            "$API/jobs/$JOB/runs/$RUN_ID" | jq -r -c '.status')
+        if [ "$STATUS" == "complete" ]
+        then
+            exit 0
+        elif [ "$STATUS" == "failed" ]
+        then
+            exit 1
+        fi
+        echo "Status $STATUS"
+        sleep 5
+    done
+    }
+    main
+  displayName: 'Run migration'
