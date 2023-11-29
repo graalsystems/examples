@@ -19,13 +19,13 @@ steps:
     set -o errexit
     set -o pipefail
 
-    export TENANT=$(variables.TENANT)
+    export TENANT=$(TENANT)
     export INFRASTRUCTURE="scaleway-frpar1"
     export JOB="5ea3450a-ae5f-4a2e-aeea-ff3b273c5867"
-    export API=$(variables.API)
-    export AUTH=$(variables.AUTH)
-    export KEY=$(variables.KEY)
-    export SECRET=$(variables.SECRET)
+    export API=$(API)
+    export AUTH=$(AUTH)
+    export KEY=$(KEY)
+    export SECRET=$(SECRET)
 
     main() {
     REALM=$(curl "$API/tenants/$TENANT?attribute=realm" | jq -r -c '.realm')
