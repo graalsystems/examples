@@ -15,7 +15,6 @@ steps:
 
 - bash: | 
     set -e
-    set -x
     set -o errexit
     set -o pipefail
 
