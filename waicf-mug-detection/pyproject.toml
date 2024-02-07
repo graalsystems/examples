@@ -1,0 +1,24 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "waicf-mug-detection"
+version = "0.0.1"
+authors = [
+    { name="Graal Systems" },
+]
+description = "Launch model that detects LBC mugs in images"
+requires-python = ">=3.6"
+dependencies = [
+    "opencv-python",
+    "pillow",
+    "heic2png",
+    "torchvision",
+    "smart_open",
+    "grpcio",
+
+]

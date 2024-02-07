@@ -1,0 +1,5 @@
+opencv-python
+pillow
+heic2png
+torchvision
+smart_open
