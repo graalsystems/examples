@@ -114,14 +114,12 @@ class CameraDisplay:
         self.mutex.acquire()
         cameras = ""
         if self.main_camera is not None:
-            cameras = "{0}+{1}".format(self.main_camera.url, cameras)
+            cameras = f"{self.main_camera.url}"
         self.mutex.release()
         return cameras
 
     def stream_frames(self, camera_id=0):
         selected_camera = None
-        camera_id = int(camera_id)
-
         self.mutex.acquire()
         if camera_id == 0:
             selected_camera = self.main_camera
@@ -144,6 +142,7 @@ def refresh_cameras():
         camera_display = get_camera_display()
         if camera_display != global_camera_display:
             global_camera_display.merge(camera_display)
+
 
 def load_fine_tuned_model(saved_model_path):
     model = models.resnet18(pretrained=True)
@@ -173,10 +172,7 @@ def classify_image(image_path, model):
     return results.item()
 
 
-def capture_and_classify_images(img_folder, model, url, global_camera_display):
-    # Open the webcam (index 0 is usually the default webcam)
-    # cap = cv2.VideoCapture(0)
-
+def capture_and_classify_images(img_folder, model, camera_stream):
     # Create the output folder if it doesn't exist
     if not os.path.exists(img_folder):
         os.makedirs(img_folder)
@@ -184,8 +180,8 @@ def capture_and_classify_images(img_folder, model, url, global_camera_display):
     try:
         while True:
             # Capture a frame from the webcam
-            # ret, frame = cap.read()
-            webcam_frame = global_camera_display.stream_frames(camera_id=0)
+            webcam_frame = camera_stream.stream_frames(camera_id=0)
+            print(f"Type image webcam: {type(webcam_frame)}")
 
             # Generate a unique filename based on the current timestamp
             timestamp = time.strftime("%Y%m%d%H%M%S")
@@ -208,16 +204,10 @@ def capture_and_classify_images(img_folder, model, url, global_camera_display):
 
             # Wait for 1 second before capturing the next image
             os.remove(filename)
-            time.sleep(0.5)
 
     except KeyboardInterrupt:
         # Handle Ctrl+C to gracefully exit the loop
         print("Capture stopped by user")
-
-    # finally:
-    #     # Release the webcam and close any OpenCV windows
-    #     cap.release()
-    #     cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
@@ -232,5 +222,4 @@ if __name__ == "__main__":
     output_folder = "images"  # Specify the folder where images will be saved
     model_path = "https://graal-demo-data-integration.s3.fr-par.scw.cloud/cannes/fine_tuned_model.pth?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=SCW2XE8GNS20FZ2EWDD9%2F20240207%2Ffr-par%2Fs3%2Faws4_request&X-Amz-Date=20240207T094844Z&X-Amz-Expires=33077&X-Amz-Signature=d4e97f4e7d8b3915bd540e5908b3f160f9954620def6f913d446b771d00e5dab&X-Amz-SignedHeaders=host&x-id=GetObject"
     fine_tuned_model = load_fine_tuned_model(model_path)
-    url_webcam = os.getenv("VIDEO_BROKER_IP") + ":80"
     capture_and_classify_images(output_folder, fine_tuned_model, global_camera_display)
