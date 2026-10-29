@@ -9,7 +9,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <hadoop.version>3.2.2</hadoop.version>
+        <hadoop.version>3.4.3</hadoop.version>
     </properties>
 
     <dependencyManagement>
@@ -53,12 +53,6 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
-
-        <dependency>
-            <groupId>graal.systems</groupId>
-            <artifactId>yarn-rpc</artifactId>
-            <version>1.1-SNAPSHOT</version>
-        </dependency>
 
         <dependency>
             <groupId>org.apache.hadoop</groupId>
@@ -138,10 +132,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.1</version>
-                    <configuration>
-                        <argLine>--enable-preview --illegal-access=permit</argLine>
-                    </configuration>
+                    <version>3.5.2</version>
                 </plugin>
 
                 <plugin>
@@ -197,10 +188,6 @@
         <repository>
             <id>central</id>
             <url>https://repo1.maven.org/maven2/</url>
-        </repository>
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/graalsystems/sdk</url>
         </repository>
     </repositories>
 
