@@ -1,4 +1,4 @@
-"""Train a small convolutional network on MNIST-shaped images with TensorFlow and Keras.
+"""Train a small convolutional network on MNIST-shaped images with TensorFlow.
 
 In a graal `tensorflow` job, the platform starts `number_replicas` pods and sets TF_CONFIG in each
 of them: the script then trains with MultiWorkerMirroredStrategy (worker 0 is the chief). Without
@@ -56,7 +56,7 @@ def load_data(name):
 
 
 def build_model():
-    model = tf.keras.Sequential([
+    return tf.keras.Sequential([
         tf.keras.Input(shape=IMAGE_SHAPE),
         tf.keras.layers.Conv2D(32, 3, activation="relu"),
         tf.keras.layers.MaxPooling2D(),
@@ -64,10 +64,8 @@ def build_model():
         tf.keras.layers.MaxPooling2D(),
         tf.keras.layers.Flatten(),
         tf.keras.layers.Dense(64, activation="relu"),
-        tf.keras.layers.Dense(NUM_CLASSES, activation="softmax"),
+        tf.keras.layers.Dense(NUM_CLASSES),
     ])
-    model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
-    return model
 
 
 def main():
@@ -75,24 +73,53 @@ def main():
     print(f"TensorFlow {tf.__version__}, GPUs: {len(tf.config.list_physical_devices('GPU'))}", flush=True)
 
     strategy, is_chief = make_strategy()
-    batch_size = args.batch_size_per_replica * strategy.num_replicas_in_sync
+    global_batch_size = args.batch_size_per_replica * strategy.num_replicas_in_sync
 
     x_train, y_train = load_data(args.dataset)
     dataset = (tf.data.Dataset.from_tensor_slices((x_train, y_train))
                .shuffle(10_000, seed=42)
-               .batch(batch_size)
-               .repeat())
+               .repeat()
+               .batch(global_batch_size, drop_remainder=True))
     options = tf.data.Options()
     options.experimental_distribute.auto_shard_policy = tf.data.experimental.AutoShardPolicy.DATA
-    dataset = dataset.with_options(options)
+    dataset = strategy.experimental_distribute_dataset(dataset.with_options(options))
 
+    # A custom training loop: each replica computes its gradients, the strategy sums them across
+    # replicas and workers (all-reduce) before every update, so all copies of the model stay equal.
     with strategy.scope():
         model = build_model()
+        optimizer = tf.keras.optimizers.Adam()
+        loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(
+            from_logits=True, reduction=tf.keras.losses.Reduction.NONE)
     if is_chief:
         model.summary()
 
-    history = model.fit(dataset, epochs=args.epochs, steps_per_epoch=args.steps_per_epoch, verbose=2)
-    print(f"Final accuracy: {history.history['accuracy'][-1]:.4f}", flush=True)
+    def step_fn(images, labels):
+        with tf.GradientTape() as tape:
+            logits = model(images, training=True)
+            loss = tf.nn.compute_average_loss(loss_fn(labels, logits), global_batch_size=global_batch_size)
+        gradients = tape.gradient(loss, model.trainable_variables)
+        optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+        correct = tf.reduce_sum(tf.cast(tf.equal(tf.argmax(logits, axis=1), labels), tf.float32))
+        return loss, correct
+
+    @tf.function
+    def train_step(iterator):
+        images, labels = next(iterator)
+        loss, correct = strategy.run(step_fn, args=(images, labels))
+        return (strategy.reduce(tf.distribute.ReduceOp.SUM, loss, axis=None),
+                strategy.reduce(tf.distribute.ReduceOp.SUM, correct, axis=None))
+
+    iterator = iter(dataset)
+    for epoch in range(1, args.epochs + 1):
+        total_loss, total_correct = 0.0, 0.0
+        for _ in range(args.steps_per_epoch):
+            loss, correct = train_step(iterator)
+            total_loss += float(loss)
+            total_correct += float(correct)
+        accuracy = total_correct / (args.steps_per_epoch * global_batch_size)
+        print(f"Epoch {epoch}/{args.epochs}: loss {total_loss / args.steps_per_epoch:.4f}, "
+              f"accuracy {accuracy:.4f}", flush=True)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,8 @@
 # tensorflow_examples
 
-Trains a small convolutional network on MNIST-shaped images with TensorFlow and Keras, distributed
-over several pods with `MultiWorkerMirroredStrategy`.
+Trains a small convolutional network (Keras layers) on MNIST-shaped images with TensorFlow,
+distributed over several pods with `MultiWorkerMirroredStrategy`: a custom training loop in which
+the gradients of every replica are summed across workers before each update.
 
 - **Job type:** `tensorflow` (specialised type: available only if your installation configured its
   runtime image; the platform's image is `python-ml`, Python 3.12 with TensorFlow 2.21 on CPU)

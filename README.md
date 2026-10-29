@@ -39,7 +39,7 @@ self-contained example with its code, a `README.md` and a `job.json` ready to ad
 | [`ray_examples`](ray_examples) | `ray` | Ray tasks, actors and Ray Data. |
 | [`flink-example`](flink-example) | `flink` | Flink DataStream (batch mode) and Flink SQL, including the platform catalog. |
 | [`dbt_examples`](dbt_examples) | `dbt` | A dbt project with models and data tests. |
-| [`tensorflow_examples`](tensorflow_examples) | `tensorflow` | Distributed Keras training with `MultiWorkerMirroredStrategy`, on CPU or GPU. |
+| [`tensorflow_examples`](tensorflow_examples) | `tensorflow` | Distributed TensorFlow training with `MultiWorkerMirroredStrategy`, on CPU or GPU. |
 | [`knime_examples`](knime_examples) | `knime` | A KNIME workflow run in batch mode (KNIME 5.8.4). |
 | [`sas`](sas) | `sas` | A SAS program run by graal-sas, without a SAS licence: DATA steps, PROC SQL, an HTML report. |
 | [`hadoop-examples`](hadoop-examples) | `apachemapreduce` | A MapReduce word count on `s3a://`, as a graal job or submitted through the YARN bridge. |
