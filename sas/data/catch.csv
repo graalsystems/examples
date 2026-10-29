@@ -1,0 +1,52 @@
+year,region,scientific_name,common_name,functional_group,sector_type,catch_tonnes,landed_value_usd
+2016,Western Pacific,Thunnus albacares,Yellowfin tuna,large pelagics,industrial,7427.2,8991585
+2016,Atlantic,Katsuwonus pelamis,Skipjack tuna,medium pelagics,industrial,530.0,1235446
+2016,Atlantic,Xiphias gladius,Swordfish,large pelagics,industrial,8537.6,25451145
+2016,Indian Ocean,Xiphias gladius,Swordfish,large pelagics,industrial,5278.5,11660447
+2016,Western Pacific,Xiphias gladius,Swordfish,large pelagics,industrial,5098.7,6829591
+2016,Atlantic,Thunnus obesus,Bigeye tuna,large pelagics,industrial,5224.0,14359987
+2016,Indian Ocean,Thunnus obesus,Bigeye tuna,large pelagics,industrial,5318.1,15999049
+2016,Western Pacific,Thunnus obesus,Bigeye tuna,large pelagics,industrial,5166.4,15203329
+2016,Atlantic,Coryphaena hippurus,Common dolphinfish,medium pelagics,artisanal,7039.6,17151888
+2016,Indian Ocean,Coryphaena hippurus,Common dolphinfish,medium pelagics,artisanal,2837.9,9993529
+2016,Western Pacific,Coryphaena hippurus,Common dolphinfish,medium pelagics,industrial,920.3,1740124
+2017,Atlantic,Thunnus albacares,Yellowfin tuna,large pelagics,artisanal,6619.1,12246623
+2017,Indian Ocean,Thunnus albacares,Yellowfin tuna,large pelagics,industrial,4705.0,6795784
+2017,Atlantic,Katsuwonus pelamis,Skipjack tuna,medium pelagics,artisanal,545.0,1692286
+2017,Indian Ocean,Katsuwonus pelamis,Skipjack tuna,medium pelagics,artisanal,3193.1,6563700
+2017,Western Pacific,Katsuwonus pelamis,Skipjack tuna,medium pelagics,artisanal,805.1,973259
+2017,Indian Ocean,Xiphias gladius,Swordfish,large pelagics,industrial,733.9,2359432
+2017,Western Pacific,Xiphias gladius,Swordfish,large pelagics,artisanal,2704.4,5876963
+2017,Atlantic,Thunnus obesus,Bigeye tuna,large pelagics,industrial,8477.7,17574540
+2017,Indian Ocean,Thunnus obesus,Bigeye tuna,large pelagics,artisanal,718.8,2469199
+2017,Indian Ocean,Coryphaena hippurus,Common dolphinfish,medium pelagics,artisanal,909.1,2165766
+2017,Western Pacific,Coryphaena hippurus,Common dolphinfish,medium pelagics,industrial,7409.7,27794887
+2018,Indian Ocean,Thunnus albacares,Yellowfin tuna,large pelagics,artisanal,6208.0,13381073
+2018,Western Pacific,Katsuwonus pelamis,Skipjack tuna,medium pelagics,industrial,4467.7,12706619
+2018,Western Pacific,Xiphias gladius,Swordfish,large pelagics,artisanal,5566.3,10862181
+2018,Indian Ocean,Thunnus obesus,Bigeye tuna,large pelagics,industrial,4218.5,15921599
+2018,Western Pacific,Thunnus obesus,Bigeye tuna,large pelagics,artisanal,3703.0,8148807
+2018,Atlantic,Coryphaena hippurus,Common dolphinfish,medium pelagics,artisanal,747.8,839216
+2019,Western Pacific,Katsuwonus pelamis,Skipjack tuna,medium pelagics,industrial,818.8,1298816
+2019,Atlantic,Xiphias gladius,Swordfish,large pelagics,artisanal,8608.1,24856072
+2019,Indian Ocean,Xiphias gladius,Swordfish,large pelagics,industrial,7670.6,32041929
+2019,Western Pacific,Xiphias gladius,Swordfish,large pelagics,artisanal,2944.3,4050143
+2019,Atlantic,Thunnus obesus,Bigeye tuna,large pelagics,artisanal,4411.9,14046551
+2019,Indian Ocean,Thunnus obesus,Bigeye tuna,large pelagics,industrial,8568.7,22649211
+2019,Atlantic,Coryphaena hippurus,Common dolphinfish,medium pelagics,industrial,6871.7,12944194
+2019,Indian Ocean,Coryphaena hippurus,Common dolphinfish,medium pelagics,industrial,6326.5,11145269
+2019,Western Pacific,Coryphaena hippurus,Common dolphinfish,medium pelagics,industrial,3330.1,5445433
+2020,Atlantic,Thunnus albacares,Yellowfin tuna,large pelagics,artisanal,5800.7,16959235
+2020,Indian Ocean,Thunnus albacares,Yellowfin tuna,large pelagics,industrial,7293.5,26260237
+2020,Western Pacific,Thunnus albacares,Yellowfin tuna,large pelagics,industrial,1959.3,4949545
+2020,Atlantic,Katsuwonus pelamis,Skipjack tuna,medium pelagics,industrial,7153.0,17584879
+2020,Western Pacific,Katsuwonus pelamis,Skipjack tuna,medium pelagics,artisanal,4135.6,16510018
+2020,Atlantic,Xiphias gladius,Swordfish,large pelagics,artisanal,908.7,1124170
+2020,Indian Ocean,Xiphias gladius,Swordfish,large pelagics,artisanal,1998.5,5914399
+2020,Western Pacific,Xiphias gladius,Swordfish,large pelagics,industrial,4419.4,13500505
+2020,Atlantic,Thunnus obesus,Bigeye tuna,large pelagics,industrial,7544.9,9775791
+2020,Indian Ocean,Thunnus obesus,Bigeye tuna,large pelagics,industrial,4406.7,6562112
+2020,Western Pacific,Thunnus obesus,Bigeye tuna,large pelagics,artisanal,963.4,3875128
+2020,Atlantic,Coryphaena hippurus,Common dolphinfish,medium pelagics,artisanal,3732.2,15019978
+2020,Indian Ocean,Coryphaena hippurus,Common dolphinfish,medium pelagics,industrial,8939.4,8858152
+2020,Western Pacific,Coryphaena hippurus,Common dolphinfish,medium pelagics,artisanal,7297.2,10087468

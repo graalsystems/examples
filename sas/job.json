@@ -1,0 +1,16 @@
+{
+  "name": "sas-fish-report",
+  "identity_id": "<IDENTITY_ID>",
+  "timeout_seconds": 900,
+  "max_retries": 0,
+  "options": {
+    "type": "sas",
+    "archive": { "type": "file", "key": "<LIBRARY_KEY>" },
+    "program": "fish_report.sas",
+    "output": "s3://<BUCKET>/sas-reports",
+    "instance_type": "Standard_Development_D1_v1",
+    "env": {
+      "MIN_YEAR": "2018"
+    }
+  }
+}

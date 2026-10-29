@@ -12,6 +12,8 @@ venv/
 # Packaged artifacts built by the examples
 pyspark-examples/tools.zip
 dbt_examples/jaffle_shop.tar.gz
+knime_examples/*.knwf
+sas/fish_report.zip
 
 # Java / Maven
 target/
@@ -39,6 +41,11 @@ dbt_examples/jaffle_shop/dbt_packages/
 
 # Job definitions filled in with real ids (see the READMEs)
 *.local.json
+
+# YARN bridge client files: they carry a token and bucket keys (see hadoop-examples)
+graal-yarn.tokens
+graal-s3.env
+bridge-conf/
 
 # Logs, IDEs, OS
 *.log

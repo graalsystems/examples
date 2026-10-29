@@ -9,7 +9,7 @@ Spark applications written in Java, packaged as one jar. Each class is a separat
 | `graal.systems.examples.WithCatalog` | Reads a table of the platform catalog with `spark.table("db.table")` (Iceberg tables served through Apache Polaris). Set the table with `SOURCE_TABLE` in `options.env`. |
 
 - **Job type:** `spark` (core type, `spark-py` image, Apache Spark 3.5)
-- **Entry point:** the jar (`file`) and the class to run (`main_class_name`)
+- **Entry point:** the jar (`main_library`, the uploaded library) and the class to run (`main_class_name`)
 - **Toolchain:** Java 17+, Maven 3.9. Spark (3.5.x, Scala 2.12) is a `provided` dependency:
   the runtime image supplies it, only picocli is bundled in the jar.
 

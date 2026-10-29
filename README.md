@@ -22,7 +22,8 @@ self-contained example with its code, a `README.md` and a `job.json` ready to ad
 
 - A project and an identity to run jobs with:
   `graalctl projects list` and `graalctl identities list`.
-- The build tools of the example you pick (Python 3.11, or Java 17 and Maven).
+- The build tools of the example you pick (Python 3.11, or Java 17 and Maven; `zip` for the
+  KNIME and SAS archives).
 
 ## Examples
 
@@ -38,13 +39,19 @@ self-contained example with its code, a `README.md` and a `job.json` ready to ad
 | [`ray_examples`](ray_examples) | `ray` | Ray tasks, actors and Ray Data. |
 | [`flink-example`](flink-example) | `flink` | Flink DataStream (batch mode) and Flink SQL, including the platform catalog. |
 | [`dbt_examples`](dbt_examples) | `dbt` | A dbt project with models and data tests. |
+| [`tensorflow_examples`](tensorflow_examples) | `tensorflow` | Distributed TensorFlow training with `MultiWorkerMirroredStrategy`, on CPU or GPU. |
+| [`knime_examples`](knime_examples) | `knime` | A KNIME workflow run in batch mode (KNIME 5.8.4). |
+| [`sas`](sas) | `sas` | A SAS program run by graal-sas, without a SAS licence: DATA steps, PROC SQL, an HTML report. |
+| [`hadoop-examples`](hadoop-examples) | `apachemapreduce` | A MapReduce word count on `s3a://`, as a graal job or submitted through the YARN bridge. |
+| [`database_migration_example`](database_migration_example) | `database-migration` | A Liquibase changelog applied to a registered data warehouse. |
 | [`ci-github-actions`](ci-github-actions) | any | Running a job from GitHub Actions with `graalctl`. |
 
 `bash`, `python` and `spark` are core types, available on every installation (images `toolbox`,
 `python` with Python 3.11, and `spark-py` with Apache Spark 3.5).
 
-`dask`, `ray`, `flink` and `dbt` are **specialised types**: they exist only if your installation
-configured their runtime image. Otherwise the API answers `501 feature_disabled`. Their options
+`dask`, `ray`, `flink`, `dbt`, `tensorflow`, `knime`, `sas`, `apachemapreduce` and
+`database-migration` are **specialised types**: they exist only if your installation configured
+their runtime image. Otherwise the API answers `501 feature_disabled`. Their options
 depend on that image: check your installation's API reference (`/api/v1/docs`) before using the
 `job.json` of these examples.
 

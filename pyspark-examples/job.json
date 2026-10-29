@@ -4,12 +4,21 @@
   "timeout_seconds": 1800,
   "max_retries": 0,
   "libraries": [
-    { "type": "file", "key": "<LIBRARY_KEY>" },
-    { "type": "file", "key": "<TOOLS_ZIP_KEY>" }
+    {
+      "type": "file",
+      "key": "<LIBRARY_KEY>"
+    },
+    {
+      "type": "file",
+      "key": "<TOOLS_ZIP_KEY>"
+    }
   ],
   "options": {
     "type": "spark",
-    "file": "spark_submit.py",
+    "main_library": {
+      "type": "file",
+      "key": "<LIBRARY_KEY>"
+    },
     "instance_type": "Standard_Development_D1_v1",
     "env": {}
   }
