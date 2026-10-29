@@ -1,25 +1,14 @@
 #!/usr/bin/env bash
+# Package the `tools` module as tools.zip, next to spark_submit.py.
+set -euo pipefail
+cd "$(dirname "$0")"
 
-export PACKAGE_NAME=pyspark-examples
-export MODULE=tools
+rm -f tools.zip
+python3 - <<'PY'
+import pathlib, zipfile
 
-echo "Packing the dependencies"
-rm -rf ./$PACKAGE_NAME $PACKAGE_NAME.zip
-grep -v '^ *#\|^pyspark\|^py4j' requirements.txt > .requirements-filtered.txt
-pip install -t ./$PACKAGE_NAME -r .requirements-filtered.txt
-rm .requirements-filtered.txt
-
-# check to see if there are any external dependencies
-# if not then create an empty file to seed zip with
-if [ -z "$(ls -A $PACKAGE_NAME)" ]
-then
-    touch $PACKAGE_NAME/empty.txt
-fi
-
-cd $PACKAGE_NAME
-zip -9mrv $PACKAGE_NAME.zip .
-mv $PACKAGE_NAME.zip ..
-cd ..
-
-echo "Add all modules from local"
-zip -ru9 $PACKAGE_NAME.zip $MODULE -x $MODULE/__pycache__/\*
+with zipfile.ZipFile("tools.zip", "w", zipfile.ZIP_DEFLATED) as archive:
+    for path in sorted(pathlib.Path("tools").rglob("*.py")):
+        archive.write(path)
+PY
+echo "Created tools.zip"
