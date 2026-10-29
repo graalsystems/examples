@@ -1,2 +1,1 @@
-ray==1.13.0
-tensorflow==2.9.1
+ray[data]>=2.40,<3

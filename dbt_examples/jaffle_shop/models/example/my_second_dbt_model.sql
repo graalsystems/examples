@@ -1,6 +1,4 @@
-
--- Use the `ref` function to select from other models
-
+-- ref() makes dbt build my_first_dbt_model first.
 select *
 from {{ ref('my_first_dbt_model') }}
 where id = 1

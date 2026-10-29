@@ -1,0 +1,16 @@
+{
+  "name": "pandas-simple",
+  "identity_id": "<IDENTITY_ID>",
+  "timeout_seconds": 900,
+  "max_retries": 0,
+  "libraries": [
+    { "type": "file", "key": "<LIBRARY_KEY>" },
+    { "type": "file", "key": "<REQUIREMENTS_KEY>" }
+  ],
+  "options": {
+    "type": "python",
+    "file": "pandas_simple.py",
+    "instance_type": "Standard_Development_D1_v1",
+    "env": {}
+  }
+}

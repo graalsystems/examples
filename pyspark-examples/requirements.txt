@@ -1,2 +1,2 @@
-pyspark==3.3.0
-tqdm==4.63.0
+# Only needed to run the example locally: the spark-py image already provides Spark 3.5.
+pyspark>=3.5,<3.6

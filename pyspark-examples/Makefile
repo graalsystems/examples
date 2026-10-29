@@ -1,4 +1,9 @@
+.PHONY: all package clean
+
+all: package
+
 package:
 	./package.sh
 
-all: package
+clean:
+	rm -f tools.zip

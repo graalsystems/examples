@@ -1,0 +1,16 @@
+{
+  "name": "flink-local-data",
+  "identity_id": "<IDENTITY_ID>",
+  "timeout_seconds": 1800,
+  "max_retries": 0,
+  "libraries": [
+    { "type": "file", "key": "<LIBRARY_KEY>" }
+  ],
+  "options": {
+    "type": "flink",
+    "file": "flink-example-1.0.0-SNAPSHOT.jar",
+    "main_class_name": "graal.systems.examples.FlinkLocalData",
+    "instance_type": "Standard_Development_D1_v1",
+    "env": {}
+  }
+}

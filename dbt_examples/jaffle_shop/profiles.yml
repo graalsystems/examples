@@ -1,0 +1,10 @@
+# DuckDB keeps the example self-contained: no warehouse or credentials needed.
+# To use another warehouse, install its dbt adapter and replace this output; read
+# credentials with env_var() or from files in /workspace/secrets/, never inline.
+jaffle_shop:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('DBT_DUCKDB_PATH', '/tmp/jaffle_shop.duckdb') }}"
+      threads: 1
