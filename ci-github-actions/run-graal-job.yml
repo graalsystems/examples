@@ -1,0 +1,48 @@
+# Runs an existing graal job from GitHub Actions and fails the workflow if the run fails.
+#
+# Copy this file to .github/workflows/ in your repository, then set:
+#   - repository secrets: GRAAL_API_URL, GRAAL_KEYCLOAK_URL, GRAAL_TENANT,
+#                         GRAAL_CLIENT_ID, GRAAL_CLIENT_SECRET
+#   - repository variable: GRAAL_JOB_ID (or give a job id when starting the workflow by hand)
+name: Run graal job
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      job_id:
+        description: "graal job id (default: the GRAAL_JOB_ID variable)"
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    env:
+      GRAAL_API_URL: ${{ secrets.GRAAL_API_URL }}            # https://graal.example.com/api/v1
+      GRAAL_KEYCLOAK_URL: ${{ secrets.GRAAL_KEYCLOAK_URL }}  # OpenID Connect base URL, without /realms/...
+      GRAAL_TENANT: ${{ secrets.GRAAL_TENANT }}
+      GRAAL_CLIENT_ID: ${{ secrets.GRAAL_CLIENT_ID }}
+      GRAAL_CLIENT_SECRET: ${{ secrets.GRAAL_CLIENT_SECRET }}
+      JOB_ID: ${{ inputs.job_id || vars.GRAAL_JOB_ID }}
+    steps:
+      - name: Install graalctl
+        env:
+          GRAALCTL_INSTALL_DIR: ${{ runner.temp }}/graalctl
+          # GRAALCTL_VERSION: v1.0.0   # pin a release for reproducible pipelines
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/graalsystems/graalctl/main/install.sh | sh
+          echo "$GRAALCTL_INSTALL_DIR" >> "$GITHUB_PATH"
+
+      - name: Check the connection
+        run: graalctl whoami
+
+      - name: Run the job and stream its logs
+        # Exit code: 0 when the run succeeds, 1 when it fails or is cancelled, 124 on timeout.
+        run: |
+          test -n "$JOB_ID" || { echo "No job id: set the GRAAL_JOB_ID variable"; exit 2; }
+          graalctl jobs run "$JOB_ID" --follow --timeout 3600

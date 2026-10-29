@@ -1,0 +1,19 @@
+{
+  "name": "bash-example",
+  "identity_id": "<IDENTITY_ID>",
+  "timeout_seconds": 300,
+  "max_retries": 0,
+  "options": {
+    "type": "bash",
+    "lines": [
+      "set -eu",
+      "echo \"Hello from graal on $(hostname)\"",
+      "echo \"Logical date: ${GRAAL_LOGICAL_DATE:-unset (run started by hand)}\"",
+      "echo \"Attempt: ${GRAAL_ATTEMPT:-unset}\"",
+      "echo \"Project bucket: ${GRAAL_BUCKET:-unset}\"",
+      "ls -la /workspace"
+    ],
+    "instance_type": "Standard_Development_D1_v1",
+    "env": {}
+  }
+}
