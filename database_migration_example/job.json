@@ -1,0 +1,18 @@
+{
+  "name": "database-migration-example",
+  "identity_id": "<IDENTITY_ID>",
+  "timeout_seconds": 900,
+  "max_retries": 0,
+  "options": {
+    "type": "database-migration",
+    "datawarehouse_id": "<DATAWAREHOUSE_ID>",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/graalsystems/examples.git",
+      "path": "database_migration_example",
+      "revision": "main"
+    },
+    "instance_type": "Standard_Development_D1_v1",
+    "env": {}
+  }
+}

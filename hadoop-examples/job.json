@@ -1,0 +1,20 @@
+{
+  "name": "hadoop-word-count",
+  "identity_id": "<IDENTITY_ID>",
+  "timeout_seconds": 1800,
+  "max_retries": 0,
+  "parameters": [
+    "s3a://<BUCKET>/hadoop-examples/input",
+    "s3a://<BUCKET>/hadoop-examples/output"
+  ],
+  "options": {
+    "type": "apachemapreduce",
+    "main_library": { "type": "file", "key": "<LIBRARY_KEY>" },
+    "main_class_name": "graal.systems.examples.WordCount",
+    "properties": {
+      "mapreduce.job.reduces": "2"
+    },
+    "instance_type": "Standard_Development_D1_v1",
+    "env": {}
+  }
+}
