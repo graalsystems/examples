@@ -1,64 +1,52 @@
 package graal.systems.examples;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.spark.api.java.JavaSparkContext;
+import java.util.concurrent.Callable;
+
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.concurrent.Callable;
+/**
+ * Reads a table of the platform catalog. Iceberg tables are served through Apache Polaris and
+ * read with {@code spark.table("db.table")}; the runtime image configures the catalog.
+ */
+@CommandLine.Command(name = "with-catalog", mixinStandardHelpOptions = true)
+public class WithCatalog implements Callable<Integer> {
 
-//
-@Slf4j
-@CommandLine.Command
-public class WithMetastore implements Callable<Integer> {
+    private static final Logger LOG = LoggerFactory.getLogger(WithCatalog.class);
+
+    @CommandLine.Option(names = "--table", description = "Table to read, as db.table (default: $SOURCE_TABLE)",
+            defaultValue = "${env:SOURCE_TABLE}")
+    private String table;
+
+    @CommandLine.Option(names = "--limit", description = "Rows to show (default: ${DEFAULT-VALUE})")
+    private int limit = 10;
 
     public static void main(String... args) {
-        int exitCode = new CommandLine(new WithMetastore()).execute(args);
-        System.exit(exitCode);
+        System.exit(new CommandLine(new WithCatalog()).execute(args));
     }
 
     @Override
     public Integer call() {
+        if (table == null || table.isBlank()) {
+            LOG.error("No table: pass --table db.table or set SOURCE_TABLE");
+            return 2;
+        }
+        SparkSession spark = SparkSession.builder().appName("with-catalog").getOrCreate();
         try {
-
-            String bucket = "fisheries-catch-data";
-
-            SparkSession sparkSession = SparkSession.builder()
-                    .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
-                    .config("spark.hadoop.fs.s3.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
-                    .config("spark.hadoop.fs.s3n.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
-
-                    .config("spark.hadoop.fs.s3a.bucket." + bucket + ".aws.credentials.provider", "org.apache.hadoop.fs.s3a.AnonymousAWSCredentialsProvider")
-                    .config("spark.hadoop.fs.s3a.bucket." + bucket + ".connection.maximum", "15")
-                    .config("spark.hadoop.fs.s3a.bucket." + bucket + ".attempts.maximum", "20")
-                    .config("spark.hadoop.fs.s3a.bucket." + bucket + ".connection.establish.timeout", "5000")
-                    .config("spark.hadoop.fs.s3a.bucket." + bucket + ".connection.timeout", "5000")
-                    .getOrCreate();
-
-            sparkSession.sql("CREATE DATABASE IF NOT EXISTS raw");
-            if (!sparkSession.catalog().tableExists("raw.fisheries_catch")) {
-                Map<String, String> options = Map.of(
-                        "source", "csv",
-                        "sep", ",",
-                        "header", "true",
-                        "path", "s3://fisheries-catch-data/global-catch-data/csv/rfmo_12.csv"
-                );
-                sparkSession.catalog().createTable("raw.fisheries_catch", "csv", options);
-            }
-            sparkSession.catalog().listTables("raw").show();
-            sparkSession.sql("select * from raw.fisheries_catch limit 10").show();
-
+            Dataset<Row> data = spark.table(table);
+            data.printSchema();
+            data.show(limit, false);
+            LOG.info("{} has {} rows", table, data.count());
             return 0;
         } catch (Exception e) {
-            log.error("Oupsss...", e);
+            LOG.error("Job failed", e);
             return 1;
+        } finally {
+            spark.stop();
         }
     }
 }

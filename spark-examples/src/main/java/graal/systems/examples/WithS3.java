@@ -1,71 +1,69 @@
 package graal.systems.examples;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import java.util.concurrent.Callable;
+
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.types.DataTypes;
-import org.apache.spark.sql.types.Metadata;
-import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
-import java.io.Serializable;
-import java.util.concurrent.Callable;
-
-//
-@Slf4j
-@CommandLine.Command
+/**
+ * Reads a CSV file from the project's bucket and aggregates it by category.
+ *
+ * <p>The bucket comes from GRAAL_BUCKET (set by graal in every run), else AWS_BUCKET. Storage
+ * credentials and endpoint are taken from the Spark/Hadoop S3A configuration of the runtime.
+ */
+@CommandLine.Command(name = "with-s3", mixinStandardHelpOptions = true)
 public class WithS3 implements Callable<Integer> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(WithS3.class);
+
+    @CommandLine.Option(names = "--path", description = "Object key of the CSV file (default: ${DEFAULT-VALUE})")
+    private String path = "data-spark-java.csv";
+
     public static void main(String... args) {
-        int exitCode = new CommandLine(new WithS3()).execute(args);
-        System.exit(exitCode);
+        System.exit(new CommandLine(new WithS3()).execute(args));
     }
 
     @Override
     public Integer call() {
+        SparkSession spark = SparkSession.builder().appName("with-s3").getOrCreate();
         try {
-            log.info("Running job...");
-            SparkSession sparkSession = SparkSession.builder().getOrCreate();
+            String location = bucketUri() + "/" + path;
+            LOG.info("Reading {}", location);
 
-            StructType schema = new StructType(
-                    new StructField[]{
-                            new StructField("id", DataTypes.StringType, false, Metadata.empty()),
-                            new StructField("title", DataTypes.StringType, false, Metadata.empty()),
-                            new StructField("category", DataTypes.StringType, false, Metadata.empty()),
-                            new StructField("price", DataTypes.FloatType, false, Metadata.empty())
-                    }
-            );
+            StructType schema = new StructType()
+                    .add("id", DataTypes.LongType, false)
+                    .add("title", DataTypes.StringType, false)
+                    .add("category", DataTypes.StringType, false)
+                    .add("price", DataTypes.DoubleType, false);
 
-            Dataset<Row> data = sparkSession.read()
-                    .option("header", "true")
-                    .schema(schema)
-                    .csv("s3://" + System.getenv("AWS_BUCKET") + "/data-spark-java.csv");
+            Dataset<Row> data = spark.read().option("header", "true").schema(schema).csv(location);
             data.printSchema();
-
-            data = data.filter(data.col("id").leq(20L)).cache();
-            data.groupBy("category").count().show();
-            data.groupBy("category").min("price").show();
-            data.groupBy("category").max("price").show();
-            data.groupBy("category").sum("price").show();
-
-            log.info("Success!");
+            Aggregations.byCategory(data);
             return 0;
         } catch (Exception e) {
-            log.error("Oupsss...", e);
+            LOG.error("Job failed", e);
             return 1;
+        } finally {
+            spark.stop();
         }
     }
 
-    @AllArgsConstructor
-    @Data
-    public static class Item implements Serializable {
-        private Long id;
-        private String title;
-        private String category;
-        private Double price;
+    /** Accepts "name", "name/prefix" or a full URI such as "s3a://name/prefix". */
+    static String bucketUri() {
+        String bucket = System.getenv("GRAAL_BUCKET");
+        if (bucket == null || bucket.isBlank()) {
+            bucket = System.getenv("AWS_BUCKET");
+        }
+        if (bucket == null || bucket.isBlank()) {
+            throw new IllegalStateException("No bucket: set GRAAL_BUCKET or AWS_BUCKET");
+        }
+        bucket = bucket.replaceAll("/+$", "");
+        return bucket.contains("://") ? bucket : "s3a://" + bucket;
     }
 }

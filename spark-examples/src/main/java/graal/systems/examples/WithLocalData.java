@@ -1,67 +1,78 @@
 package graal.systems.examples;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Row;
-import org.apache.spark.sql.SparkSession;
-import picocli.CommandLine;
-
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Callable;
 
-//
-@Slf4j
-@CommandLine.Command
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Encoders;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SparkSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import picocli.CommandLine;
+
+/** Builds a dataset in memory and aggregates it by category. */
+@CommandLine.Command(name = "with-local-data", mixinStandardHelpOptions = true)
 public class WithLocalData implements Callable<Integer> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(WithLocalData.class);
+
     public static void main(String... args) {
-        int exitCode = new CommandLine(new WithLocalData()).execute(args);
-        System.exit(exitCode);
+        System.exit(new CommandLine(new WithLocalData()).execute(args));
     }
 
     @Override
     public Integer call() {
+        SparkSession spark = SparkSession.builder().appName("with-local-data").getOrCreate();
         try {
-            SparkSession sparkSession = SparkSession.builder().getOrCreate();
-
-            compute(sparkSession);
-
+            compute(spark);
             return 0;
         } catch (Exception e) {
-            log.error("Oupsss...", e);
+            LOG.error("Job failed", e);
             return 1;
+        } finally {
+            spark.stop();
         }
     }
 
-    protected static void compute(SparkSession sparkSession) {
-        Dataset<Row> data = sparkSession.createDataFrame(
-                new JavaSparkContext(sparkSession.sparkContext())
-                        .parallelize(Arrays.asList(
-                                new Item(1L, "Title1", "Category1", 2.0d),
-                                new Item(2L, "Title2", "Category1", 2.0d),
-                                new Item(3L, "Title3", "Category2", 2.0d),
-                                new Item(4L, "Title4", "Category2", 2.0d),
-                                new Item(5L, "Title5", "Category2", 2.0d)
-                        )), Item.class);
-        data.printSchema();
+    static void compute(SparkSession spark) {
+        List<Item> items = List.of(
+                new Item(1L, "Title1", "Category1", 2.0d),
+                new Item(2L, "Title2", "Category1", 2.0d),
+                new Item(3L, "Title3", "Category2", 2.0d),
+                new Item(4L, "Title4", "Category2", 2.0d),
+                new Item(5L, "Title5", "Category2", 2.0d));
 
-        data = data.filter(data.col("id").leq(20L)).cache();
-        data.groupBy("category").count().show();
-        data.groupBy("category").min("price").show();
-        data.groupBy("category").max("price").show();
-        data.groupBy("category").sum("price").show();
+        Dataset<Row> data = spark.createDataset(items, Encoders.bean(Item.class)).toDF();
+        data.printSchema();
+        Aggregations.byCategory(data);
     }
 
-    @AllArgsConstructor
-    @Data
+    /** A JavaBean: Spark maps its getters to columns. */
     public static class Item implements Serializable {
         private Long id;
         private String title;
         private String category;
         private Double price;
+
+        public Item() {
+        }
+
+        public Item(Long id, String title, String category, Double price) {
+            this.id = id;
+            this.title = title;
+            this.category = category;
+            this.price = price;
+        }
+
+        public Long getId() { return id; }
+        public void setId(Long id) { this.id = id; }
+        public String getTitle() { return title; }
+        public void setTitle(String title) { this.title = title; }
+        public String getCategory() { return category; }
+        public void setCategory(String category) { this.category = category; }
+        public Double getPrice() { return price; }
+        public void setPrice(Double price) { this.price = price; }
     }
 }
