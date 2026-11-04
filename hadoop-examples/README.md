@@ -10,7 +10,9 @@ Hadoop 3.4 API. The same jar runs two ways:
 
 - **Job type:** `apachemapreduce` (specialised type: available only if your installation configured
   the `hadoop` runtime image; `apachehadoop` takes the same options)
-- **Entry point:** the jar (`main_library`) and the class to run (`main_class_name`); the job's
+- **Entry point:** the jar (`main_library`), whose manifest names the class to run (`Main-Class`, set in
+  `pom.xml`). Leave `main_class_name` empty for such a jar: like `hadoop jar`, graal would pass the class name
+  to the program as its first argument (`Usage: WordCount …`). Set it only for a jar without `Main-Class`. The job's
   `parameters` are the program arguments (`<input> <output>`), `properties` become `-D key=value`
   generic options
 - **Storage:** paths in `s3a://` (or local paths inside the pod). There is no HDFS: graal gives the
