@@ -19,6 +19,9 @@ Hadoop 3.4 API. The same jar runs two ways:
 - **Toolchain:** Java 11+, Maven 3.9. Hadoop 3.4.3 (`hadoop-client-api`) is a `provided`
   dependency; set `-Dhadoop.version=...` to match your runtime image or client.
 
+**Deploy in one command:** `./deploy.sh hadoop-examples --project "$PROJECT_ID" --identity "$IDENTITY_ID" --run` from the
+repository root (see its README); the steps below do the same by hand.
+
 ## Build
 
 ```sh
@@ -46,6 +49,9 @@ sed -e "s/<IDENTITY_ID>/$IDENTITY_ID/" \
 JOB_ID=$(graalctl jobs create --project "$PROJECT_ID" -f job.local.json -o id)
 graalctl jobs run "$JOB_ID" --follow
 ```
+
+[`job.apachehadoop.json`](job.apachehadoop.json) is the same job with the type `apachehadoop` (same
+image, options and run, another output directory): fill it in with the same `sed` instead of `job.json`.
 
 The result is in `s3a://<BUCKET>/hadoop-examples/output/part-r-*`. Like any MapReduce job, it fails
 if the output directory already exists: delete it, or change the second parameter, before running

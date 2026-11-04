@@ -1,5 +1,5 @@
-dask[dataframe,distributed]>=2024.8
-pandas>=2.2,<3
+dask[dataframe,distributed]>=2026.8
+pandas>=2.2
 scikit-learn>=1.5,<2
-xgboost>=2.1,<4
+xgboost-cpu>=3.0,<4
 lightgbm>=4.5,<5

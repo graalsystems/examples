@@ -1,0 +1,27 @@
+{
+  "name": "pulsar-order-totals",
+  "identity_id": "<IDENTITY_ID>",
+  "timeout_seconds": 900,
+  "max_retries": 0,
+  "parameters": [
+    "persistent://public/default/orders",
+    "persistent://public/default/order-totals"
+  ],
+  "libraries": [
+    {
+      "type": "file",
+      "key": "<LIBRARY_KEY>"
+    }
+  ],
+  "options": {
+    "type": "pulsar",
+    "main_library": {
+      "type": "file",
+      "key": "<LIBRARY_KEY>"
+    },
+    "main_class_name": "graal.systems.examples.pulsar.OrderTotals",
+    "topics": ["orders", "order-totals"],
+    "instance_type": "Standard_Development_D1_v1",
+    "env": {}
+  }
+}

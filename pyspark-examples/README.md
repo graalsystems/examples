@@ -9,6 +9,9 @@ Apache Polaris).
 - **Entry point:** `spark_submit.py`, which registers `tools.zip` with `addPyFile`
 - **Optional:** set `SOURCE_TABLE` (for example `sales.orders`) in `options.env` to read a catalog table
 
+**Deploy in one command:** `./deploy.sh pyspark-examples --project "$PROJECT_ID" --identity "$IDENTITY_ID" --run` from the
+repository root (see its README); the steps below do the same by hand.
+
 ## Build
 
 ```sh

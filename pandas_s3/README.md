@@ -7,6 +7,9 @@ Reads `data-pandas-s3.csv` from object storage, groups the rows by month with pa
 - **Entry point:** `pandas_s3.py` (options: `--input KEY`, `--output KEY`)
 - **Dependencies:** `requirements.txt`, installed by the `python` image at start-up
 
+**Deploy in one command:** `./deploy.sh pandas_s3 --project "$PROJECT_ID" --identity "$IDENTITY_ID" --run` from the
+repository root (see its README); the steps below do the same by hand.
+
 ## Configuration
 
 | What | Where the script looks |

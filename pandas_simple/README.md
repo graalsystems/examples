@@ -7,6 +7,9 @@ No external data or credentials are needed, which makes it a good first job.
 - **Entry point:** `pandas_simple.py`
 - **Dependencies:** `requirements.txt`, installed by the `python` image at start-up
 
+**Deploy in one command:** `./deploy.sh pandas_simple --project "$PROJECT_ID" --identity "$IDENTITY_ID" --run` from the
+repository root (see its README); the steps below do the same by hand.
+
 ## Build
 
 Nothing to build: the script and `requirements.txt` are uploaded as they are.

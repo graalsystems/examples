@@ -11,6 +11,9 @@ A small, self-contained Ray program:
   or starts a local Ray instance
 - **Dependencies:** `requirements.txt` (`ray[data]`)
 
+**Deploy in one command:** `./deploy.sh ray_examples --project "$PROJECT_ID" --identity "$IDENTITY_ID" --run` from the
+repository root (see its README); the steps below do the same by hand.
+
 ## Build
 
 Nothing to build. To try it locally:

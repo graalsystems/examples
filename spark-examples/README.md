@@ -13,6 +13,9 @@ Spark applications written in Java, packaged as one jar. Each class is a separat
 - **Toolchain:** Java 17+, Maven 3.9. Spark (3.5.x, Scala 2.12) is a `provided` dependency:
   the runtime image supplies it, only picocli is bundled in the jar.
 
+**Deploy in one command:** `./deploy.sh spark-examples --project "$PROJECT_ID" --identity "$IDENTITY_ID" --run` from the
+repository root (see its README); the steps below do the same by hand.
+
 ## Build
 
 ```sh

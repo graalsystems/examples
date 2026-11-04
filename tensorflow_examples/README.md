@@ -21,6 +21,9 @@ the gradients of every replica are summed across workers before each update.
   so this needs a project data connection of type `http` for `https://storage.googleapis.com`,
   listed in `options.connections`.
 
+**Deploy in one command:** `./deploy.sh tensorflow_examples --project "$PROJECT_ID" --identity "$IDENTITY_ID" --run` from the
+repository root (see its README); the steps below do the same by hand.
+
 ## Build
 
 Nothing to build: the job runs `tensorflow_mnist.py` as uploaded, with the TensorFlow of the image.

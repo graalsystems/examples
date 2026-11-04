@@ -22,8 +22,8 @@ self-contained example with its code, a `README.md` and a `job.json` ready to ad
 
 - A project and an identity to run jobs with:
   `graalctl projects list` and `graalctl identities list`.
-- The build tools of the example you pick (Python 3.11, or Java 17 and Maven; `zip` for the
-  KNIME and SAS archives).
+- The build tools of the example you pick (Python 3.11, or Java 17 and Maven, Java 21 for the
+  Spring and Pekko examples; `zip` for the KNIME and SAS archives).
 
 ## Examples
 
@@ -42,18 +42,45 @@ self-contained example with its code, a `README.md` and a `job.json` ready to ad
 | [`tensorflow_examples`](tensorflow_examples) | `tensorflow` | Distributed TensorFlow training with `MultiWorkerMirroredStrategy`, on CPU or GPU. |
 | [`knime_examples`](knime_examples) | `knime` | A KNIME workflow run in batch mode (KNIME 5.8.4). |
 | [`sas`](sas) | `sas` | A SAS program run by graal-sas, without a SAS licence: DATA steps, PROC SQL, an HTML report. |
-| [`hadoop-examples`](hadoop-examples) | `apachemapreduce` | A MapReduce word count on `s3a://`, as a graal job or submitted through the YARN bridge. |
+| [`hadoop-examples`](hadoop-examples) | `apachemapreduce`, `apachehadoop` | A MapReduce word count on `s3a://`, as a graal job or submitted through the YARN bridge. |
+| [`beam-example`](beam-example) | `beam` | An Apache Beam pipeline in Java (DirectRunner): a word count checked against Beam metrics. |
+| [`spring-batch-example`](spring-batch-example) | `spring-batch` | A two-step Spring Batch job (chunked CSV load, report) with its job repository in an in-memory H2. |
+| [`spring-cloud-task-example`](spring-cloud-task-example) | `spring-cloud-data-flow` | A Spring Cloud Task, run by graal without a Data Flow server: reconciling payments against invoices. |
+| [`pekko-example`](pekko-example) | `akka-data-pipeline` | An Apache Pekko Streams pipeline: per-sensor statistics in parallel sub-streams. |
+| [`pulsar-example`](pulsar-example) | `pulsar` | A producer and consumers on the Pulsar standalone that graal starts in the run's pod. |
+| [`hive_example`](hive_example) | `hive` | A HiveQL script (spark-sql on an Iceberg catalogue): a table, an insert, two aggregations. |
+| [`lowcode_example`](lowcode_example) | `lowcode` | A low-code graph (read, aggregate, quality checks, write) turned into pandas or PySpark at run time. |
+| [`notebook_example`](notebook_example) | `notebook` | A parameterised Jupyter notebook run top to bottom as a batch job. |
+| [`docker_example`](docker_example) | `docker` | Your own container image, run once with your command under graal's pod rules. |
 | [`database_migration_example`](database_migration_example) | `database-migration` | A Liquibase changelog applied to a registered data warehouse. |
 | [`ci-github-actions`](ci-github-actions) | any | Running a job from GitHub Actions with `graalctl`. |
 
 `bash`, `python` and `spark` are core types, available on every installation (images `toolbox`,
 `python` with Python 3.11, and `spark-py` with Apache Spark 3.5).
 
-`dask`, `ray`, `flink`, `dbt`, `tensorflow`, `knime`, `sas`, `apachemapreduce` and
+`dask`, `ray`, `flink`, `dbt`, `hive`, `notebook`, `tensorflow`, `knime`, `sas`, `apachemapreduce`,
+`apachehadoop`, `beam`, `spring-batch`, `spring-cloud-data-flow`, `akka-data-pipeline`, `pulsar` and
 `database-migration` are **specialised types**: they exist only if your installation configured
 their runtime image. Otherwise the API answers `501 feature_disabled`. Their options
 depend on that image: check your installation's API reference (`/api/v1/docs`) before using the
 `job.json` of these examples.
+
+## Deploy an example in one command
+
+Every example directory has a `graal.env` that says how to build it and which files to upload.
+[`deploy.sh`](deploy.sh) builds the example, uploads its libraries, fills `job.json` and creates the
+job — and runs it with `--run`:
+
+```sh
+export PROJECT_ID=...   IDENTITY_ID=...          # graalctl projects list / graalctl identities list
+./deploy.sh lowcode_example --run                # build + upload + create + run, logs streamed
+./deploy.sh hive_example --dry-run               # print the job that would be created, send nothing
+```
+
+Some examples need a value of your installation, named in their `graal.env` (`REQUIRES`) and taken
+from the environment: `BUCKET` (`hadoop-examples`, `sas`), `CONNECTION_ID` (`knime_examples`),
+`DATAWAREHOUSE_ID` (`database_migration_example`), `IMAGE` (`docker_example`). `deploy.sh` refuses to
+send a job with a placeholder left.
 
 ## How a job runs
 

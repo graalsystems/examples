@@ -35,6 +35,9 @@ columns of a fisheries catch dataset.
 - **Credentials:** never in the program. A `LIBNAME` password or secret key is written
   `"${secret:<name>}"` and resolved from the secrets of the job's identity.
 
+**Deploy in one command:** `./deploy.sh sas --project "$PROJECT_ID" --identity "$IDENTITY_ID" --run` from the
+repository root (see its README); the steps below do the same by hand.
+
 ## Build
 
 Package the project (the archive root holds `fish_report.sas` and `data/`):

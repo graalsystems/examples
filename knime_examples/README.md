@@ -31,6 +31,9 @@ interface:
 - **Memory:** the JVM heap is 70% of the instance type's memory; the uncompressed file is large, so
   choose an instance type with at least 8 GiB from `graalctl instance-types list`.
 
+**Deploy in one command:** `./deploy.sh knime_examples --project "$PROJECT_ID" --identity "$IDENTITY_ID" --run` from the
+repository root (see its README); the steps below do the same by hand.
+
 ## Build
 
 Open `imdb_sample/` in KNIME Analytics Platform to view or change it. Package it as a workflow

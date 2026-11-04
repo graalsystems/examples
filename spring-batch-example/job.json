@@ -1,0 +1,25 @@
+{
+  "name": "spring-batch-sales-report",
+  "identity_id": "<IDENTITY_ID>",
+  "timeout_seconds": 900,
+  "max_retries": 0,
+  "libraries": [
+    {
+      "type": "file",
+      "key": "<LIBRARY_KEY>"
+    }
+  ],
+  "options": {
+    "type": "spring-batch",
+    "main_library": {
+      "type": "file",
+      "key": "<LIBRARY_KEY>"
+    },
+    "main_class_name": "org.springframework.boot.loader.launch.JarLauncher",
+    "properties": {
+      "sales.max-rejected": "5"
+    },
+    "instance_type": "Standard_Development_D1_v1",
+    "env": {}
+  }
+}

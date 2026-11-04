@@ -12,6 +12,9 @@ Apache Flink jobs written in Java, packaged as one jar:
 - **Toolchain:** Java 17+, Maven 3.9. Flink 1.20.x (LTS) is a `provided` dependency; set
   `-Dflink.version=...` to match the Flink of your runtime image (the code also compiles with Flink 2.x).
 
+**Deploy in one command:** `./deploy.sh flink-example --project "$PROJECT_ID" --identity "$IDENTITY_ID" --run` from the
+repository root (see its README); the steps below do the same by hand.
+
 ## Build
 
 ```sh

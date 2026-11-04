@@ -9,6 +9,9 @@ after each epoch. Uses a GPU when the instance type provides one, the CPU otherw
 - **Network:** the dataset is downloaded from the internet into `DATA_DIR` (default `/tmp/data`)
   on first use. Without outbound access, put the dataset in that directory instead.
 
+**Deploy in one command:** `./deploy.sh pytorch_examples --project "$PROJECT_ID" --identity "$IDENTITY_ID" --run` from the
+repository root (see its README); the steps below do the same by hand.
+
 ## Build
 
 Nothing to build. To try it locally:

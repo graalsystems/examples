@@ -17,6 +17,9 @@ history to graal, where it is listed with the data warehouse.
 - **Network:** the run clones the repository and connects to the database: both must be reachable
   from the run under your installation's egress rules.
 
+**Deploy in one command:** `./deploy.sh database_migration_example --project "$PROJECT_ID" --identity "$IDENTITY_ID" --run` from the
+repository root (see its README); the steps below do the same by hand.
+
 ## Build
 
 Nothing to build. Commit your changes to `changelog.yaml` in a new change set (never edit a change
