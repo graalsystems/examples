@@ -1,0 +1,9 @@
+region,city,month,product,quantity,unit_price
+Bretagne,Rennes,2026-01,apple,120,1.25
+Bretagne,Brest,2026-01,pear,80,2.10
+Bretagne,Rennes,2026-02,apple,95,1.30
+Occitanie,Toulouse,2026-01,apple,150,1.20
+Occitanie,Montpellier,2026-02,pear,60,2.40
+Occitanie,Toulouse,2026-02,pear,70,2.35
+Ile-de-France,Paris,2026-01,apple,300,1.45
+Ile-de-France,Paris,2026-02,pear,210,2.60

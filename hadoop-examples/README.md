@@ -10,7 +10,9 @@ Hadoop 3.4 API. The same jar runs two ways:
 
 - **Job type:** `apachemapreduce` (specialised type: available only if your installation configured
   the `hadoop` runtime image; `apachehadoop` takes the same options)
-- **Entry point:** the jar (`main_library`) and the class to run (`main_class_name`); the job's
+- **Entry point:** the jar (`main_library`), whose manifest names the class to run (`Main-Class`, set in
+  `pom.xml`). Leave `main_class_name` empty for such a jar: like `hadoop jar`, graal would pass the class name
+  to the program as its first argument (`Usage: WordCount …`). Set it only for a jar without `Main-Class`. The job's
   `parameters` are the program arguments (`<input> <output>`), `properties` become `-D key=value`
   generic options
 - **Storage:** paths in `s3a://` (or local paths inside the pod). There is no HDFS: graal gives the
@@ -18,6 +20,9 @@ Hadoop 3.4 API. The same jar runs two ways:
   job's identity can read and write it. No key goes in the job.
 - **Toolchain:** Java 11+, Maven 3.9. Hadoop 3.4.3 (`hadoop-client-api`) is a `provided`
   dependency; set `-Dhadoop.version=...` to match your runtime image or client.
+
+**Deploy in one command:** `./deploy.sh hadoop-examples --project "$PROJECT_ID" --identity "$IDENTITY_ID" --run` from the
+repository root (see its README); the steps below do the same by hand.
 
 ## Build
 
@@ -46,6 +51,9 @@ sed -e "s/<IDENTITY_ID>/$IDENTITY_ID/" \
 JOB_ID=$(graalctl jobs create --project "$PROJECT_ID" -f job.local.json -o id)
 graalctl jobs run "$JOB_ID" --follow
 ```
+
+[`job.apachehadoop.json`](job.apachehadoop.json) is the same job with the type `apachehadoop` (same
+image, options and run, another output directory): fill it in with the same `sed` instead of `job.json`.
 
 The result is in `s3a://<BUCKET>/hadoop-examples/output/part-r-*`. Like any MapReduce job, it fails
 if the output directory already exists: delete it, or change the second parameter, before running

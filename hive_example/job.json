@@ -1,0 +1,20 @@
+{
+  "name": "hive-sales-by-region",
+  "identity_id": "<IDENTITY_ID>",
+  "timeout_seconds": 1800,
+  "max_retries": 0,
+  "options": {
+    "type": "hive",
+    "lines": [
+      "CREATE TABLE IF NOT EXISTS hive_example_sales (region STRING, city STRING, month STRING, product STRING, quantity INT, unit_price DOUBLE);",
+      "INSERT OVERWRITE hive_example_sales VALUES ('Bretagne', 'Rennes', '2026-01', 'apple', 120, 1.25), ('Bretagne', 'Brest', '2026-01', 'pear', 80, 2.10), ('Bretagne', 'Rennes', '2026-02', 'apple', 95, 1.30), ('Occitanie', 'Toulouse', '2026-01', 'apple', 150, 1.20), ('Occitanie', 'Montpellier', '2026-02', 'pear', 60, 2.40), ('Occitanie', 'Toulouse', '2026-02', 'pear', 70, 2.35), ('Ile-de-France', 'Paris', '2026-01', 'apple', 300, 1.45), ('Ile-de-France', 'Paris', '2026-02', 'pear', 210, 2.60);",
+      "SELECT region, COUNT(*) AS lines, SUM(quantity) AS quantity, ROUND(SUM(quantity * unit_price), 2) AS revenue FROM hive_example_sales GROUP BY region ORDER BY revenue DESC;",
+      "SELECT product, month, SUM(quantity) AS quantity FROM hive_example_sales GROUP BY product, month ORDER BY product, month;"
+    ],
+    "conf": {
+      "spark.sql.shuffle.partitions": "4"
+    },
+    "instance_type": "Standard_Development_D1_v1",
+    "env": {}
+  }
+}

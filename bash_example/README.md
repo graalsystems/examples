@@ -12,6 +12,9 @@ in every run and lists `/workspace`:
 - **Entry point:** `options.lines`, run in order; keep them POSIX `sh` compatible
 - **Dependencies:** none
 
+**Deploy in one command:** `./deploy.sh bash_example --project "$PROJECT_ID" --identity "$IDENTITY_ID" --run` from the
+repository root (see its README); the steps below do the same by hand.
+
 ## Build
 
 Nothing to build.

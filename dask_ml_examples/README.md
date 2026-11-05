@@ -12,6 +12,9 @@ Machine learning with Dask, on data generated in code:
   `DASK_SCHEDULER_ADDRESS` (or `--scheduler`), or starts a local cluster
 - **Dependencies:** `requirements.txt`
 
+**Deploy in one command:** `./deploy.sh dask_ml_examples --project "$PROJECT_ID" --identity "$IDENTITY_ID" --run` from the
+repository root (see its README); the steps below do the same by hand.
+
 ## Build
 
 Nothing to build. To try it locally:

@@ -1,0 +1,122 @@
+{
+  "id": "sales-by-region",
+  "tasks": [
+    {
+      "id": "read_sales",
+      "type": "read",
+      "dependency": [],
+      "params": {
+        "type": "file",
+        "connector": {
+          "type": "local"
+        },
+        "structure": [
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "city",
+            "type": "str"
+          },
+          {
+            "name": "month",
+            "type": "str"
+          },
+          {
+            "name": "product",
+            "type": "str"
+          },
+          {
+            "name": "quantity",
+            "type": "double"
+          },
+          {
+            "name": "unit_price",
+            "type": "double"
+          }
+        ],
+        "object": {
+          "type": "csv",
+          "header": true,
+          "path": "/workspace/sales"
+        }
+      }
+    },
+    {
+      "id": "quantity_by_region",
+      "type": "aggregation",
+      "dependency": [
+        "read_sales"
+      ],
+      "params": {
+        "group_columns": [
+          "region"
+        ],
+        "aggregations": [
+          {
+            "type": "sum",
+            "columns": [
+              "quantity"
+            ]
+          },
+          {
+            "type": "count",
+            "columns": [
+              "city"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "check_report",
+      "type": "expect",
+      "dependency": [
+        "quantity_by_region"
+      ],
+      "params": {
+        "checks": [
+          {
+            "check": "row_count",
+            "min": 3,
+            "max": 3
+          },
+          {
+            "check": "not_null",
+            "column": "region"
+          },
+          {
+            "check": "unique",
+            "columns": [
+              "region"
+            ]
+          },
+          {
+            "check": "between",
+            "column": "sum_quantity",
+            "min": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "write_report",
+      "type": "write",
+      "dependency": [
+        "check_report"
+      ],
+      "params": {
+        "type": "file",
+        "connector": {
+          "type": "local"
+        },
+        "object": {
+          "type": "csv",
+          "header": true,
+          "path": "/tmp/sales_by_region"
+        }
+      }
+    }
+  ]
+}

@@ -6,12 +6,15 @@ warehouse or credentials.
 
 - **Job type:** `dbt` (specialised type: available only if your installation configured a dbt runtime image)
 - **Project:** `jaffle_shop/` (`dbt_project.yml`, `profiles.yml`, `models/`)
-- **Dependencies:** `requirements.txt` (`dbt-core`, `dbt-duckdb`), for local runs
+- **Dependencies:** `requirements.txt` (`dbt-core`, `dbt-duckdb`), for local runs; the `dbt` runtime image ships dbt-core with the trino, postgres and duckdb adapters, so a run installs nothing
 - **Settings:** `DBT_DUCKDB_PATH` sets the DuckDB file (default `/tmp/jaffle_shop.duckdb`)
 
 To target another warehouse, install its dbt adapter and replace the output in
 `jaffle_shop/profiles.yml`. Read credentials with `env_var()` or from the files graal writes to
 `/workspace/secrets/`; never put them in the profile.
+
+**Deploy in one command:** `./deploy.sh dbt_examples --project "$PROJECT_ID" --identity "$IDENTITY_ID" --run` from the
+repository root (see its README); the steps below do the same by hand.
 
 ## Build
 

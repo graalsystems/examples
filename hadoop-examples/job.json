@@ -9,8 +9,10 @@
   ],
   "options": {
     "type": "apachemapreduce",
-    "main_library": { "type": "file", "key": "<LIBRARY_KEY>" },
-    "main_class_name": "graal.systems.examples.WordCount",
+    "main_library": {
+      "type": "file",
+      "key": "<LIBRARY_KEY>"
+    },
     "properties": {
       "mapreduce.job.reduces": "2"
     },
