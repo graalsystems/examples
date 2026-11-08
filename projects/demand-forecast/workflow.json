@@ -1,0 +1,13 @@
+{
+  "name": "demand-forecast-weekly",
+  "description": "Prepare the sales history, train and forecast, then publish the weekly forecast",
+  "identity_id": "<IDENTITY_ID>",
+  "schedule": { "type": "once" },
+  "tasks": [
+    { "type": "start", "name": "start" },
+    { "type": "job", "name": "prepare", "depends": ["start"], "ref": "<JOB:prepare>" },
+    { "type": "job", "name": "train", "depends": ["prepare"], "ref": "<JOB:train>" },
+    { "type": "job", "name": "publish", "depends": ["train"], "ref": "<JOB:publish>" },
+    { "type": "end", "name": "end", "depends": ["publish"] }
+  ]
+}

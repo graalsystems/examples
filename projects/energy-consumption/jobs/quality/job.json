@@ -1,0 +1,14 @@
+{
+  "name": "energy-quality",
+  "description": "Checks energy_daily (no gap, no missing value, bounds, correlation with the cold); fails the workflow on a violation",
+  "identity_id": "<IDENTITY_ID>",
+  "timeout_seconds": 900,
+  "max_retries": 0,
+  "libraries": [{ "type": "file", "key": "<LIBRARY_KEY>" }],
+  "options": {
+    "type": "python",
+    "file": "quality.py",
+    "instance_type": "Standard_Development_D1_v1",
+    "env": {}
+  }
+}

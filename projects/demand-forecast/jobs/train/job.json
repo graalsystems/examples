@@ -1,0 +1,17 @@
+{
+  "name": "forecast-train",
+  "description": "Notebook: gradient boosting validated against a naive baseline, metrics in the MLflow experiment demand-forecast, forecast written to forecast_predictions",
+  "identity_id": "<IDENTITY_ID>",
+  "timeout_seconds": 1800,
+  "max_retries": 0,
+  "libraries": [{ "type": "file", "key": "<LIBRARY_KEY>" }],
+  "options": {
+    "type": "notebook",
+    "notebook": "train.ipynb",
+    "experiment": "demand-forecast",
+    "parameters": { "validation_days": 56, "max_iter": 300 },
+    "cell_timeout_seconds": 600,
+    "instance_type": "Standard_Development_D1_v1",
+    "env": {}
+  }
+}

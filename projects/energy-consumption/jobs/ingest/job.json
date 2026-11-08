@@ -1,0 +1,14 @@
+{
+  "name": "energy-ingest",
+  "description": "Synthetic hourly consumption and temperature for four regions, written to the Iceberg table energy_hourly",
+  "identity_id": "<IDENTITY_ID>",
+  "timeout_seconds": 900,
+  "max_retries": 0,
+  "libraries": [{ "type": "file", "key": "<LIBRARY_KEY>" }],
+  "options": {
+    "type": "python",
+    "file": "ingest.py",
+    "instance_type": "Standard_Development_D1_v1",
+    "env": { "START_DATE": "2025-01-01", "DAYS": "365" }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "example-energy-consumption",
+  "description": "Example project (github.com/graalsystems/examples, projects/energy-consumption): a daily data pipeline — ingestion, aggregation and quality checks on Iceberg tables, chained by a workflow.",
+  "labels": { "graal.example": "energy-consumption" },
+  "jobs": ["ingest", "aggregate", "quality"]
+}

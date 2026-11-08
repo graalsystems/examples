@@ -1,0 +1,13 @@
+{
+  "name": "energy-daily-pipeline",
+  "description": "Ingest the hourly readings, aggregate them per day, then check the result",
+  "identity_id": "<IDENTITY_ID>",
+  "schedule": { "type": "once" },
+  "tasks": [
+    { "type": "start", "name": "start" },
+    { "type": "job", "name": "ingest", "depends": ["start"], "ref": "<JOB:ingest>" },
+    { "type": "job", "name": "aggregate", "depends": ["ingest"], "ref": "<JOB:aggregate>" },
+    { "type": "job", "name": "quality", "depends": ["aggregate"], "ref": "<JOB:quality>" },
+    { "type": "end", "name": "end", "depends": ["quality"] }
+  ]
+}
