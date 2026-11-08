@@ -1,0 +1,6 @@
+{
+  "name": "example-demand-forecast",
+  "description": "Example project (github.com/graalsystems/examples, projects/demand-forecast): machine learning on Iceberg tables — data preparation, a training notebook tracked in MLflow, and a published weekly forecast, chained by a workflow.",
+  "labels": { "graal.example": "demand-forecast" },
+  "jobs": ["prepare", "train", "publish"]
+}

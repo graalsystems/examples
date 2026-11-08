@@ -1,0 +1,14 @@
+{
+  "name": "forecast-prepare",
+  "description": "Two years of daily sales for six stores and three product families, and the 28 days to forecast, written to the Iceberg table forecast_sales_history",
+  "identity_id": "<IDENTITY_ID>",
+  "timeout_seconds": 900,
+  "max_retries": 0,
+  "libraries": [{ "type": "file", "key": "<LIBRARY_KEY>" }],
+  "options": {
+    "type": "python",
+    "file": "prepare.py",
+    "instance_type": "Standard_Development_D1_v1",
+    "env": { "END_DATE": "2025-12-31", "DAYS": "730", "HORIZON": "28" }
+  }
+}

@@ -55,6 +55,24 @@ self-contained example with its code, a `README.md` and a `job.json` ready to ad
 | [`database_migration_example`](database_migration_example) | `database-migration` | A Liquibase changelog applied to a registered data warehouse. |
 | [`ci-github-actions`](ci-github-actions) | any | Running a job from GitHub Actions with `graalctl`. |
 
+## Example projects
+
+[`projects/`](projects) holds **whole graal projects**: several jobs that hand data to each other
+through Iceberg tables, the identity that runs them with only the rights it needs, and a workflow
+that chains them — deployed in one command by
+[`projects/deploy-project.sh`](projects/deploy-project.sh).
+
+| Project | What it shows |
+|---|---|
+| [`energy-consumption`](projects/energy-consumption) | A daily data pipeline: ingestion, aggregation, quality checks that stop the workflow on a violation |
+| [`demand-forecast`](projects/demand-forecast) | Machine learning: data preparation, a training notebook tracked in MLflow and validated against a baseline, a published weekly forecast |
+
+```sh
+projects/deploy-project.sh projects/energy-consumption --run
+```
+
+## Job types
+
 `bash`, `python` and `spark` are core types, available on every installation (images `toolbox`,
 `python` with Python 3.11, and `spark-py` with Apache Spark 3.5).
 
